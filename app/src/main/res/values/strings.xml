@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Make Note</string>
+    <string name="create_sample_data">Create sample data</string>
+    <string name="delete_all_notes">Delete all notes</string>
 </resources>
