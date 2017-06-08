@@ -69,7 +69,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     }
 
     private void deleteAllNotes() {
-        
+
     }
 
     private void insertSampleData() {
