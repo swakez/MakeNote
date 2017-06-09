@@ -1,11 +1,15 @@
 package makenote.swakez.github.io;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -14,21 +18,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 implements LoaderManager.LoaderCallbacks<Cursor>
 {
         CursorAdapter cursorAdapter;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        insertNote("new note");
-
         String[] from = {DBOpenHelper.NOTE_TEXT};
         int[] to = {android.R.id.text1};
+
         cursorAdapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_1, null, from, to, 0);
 
@@ -40,7 +45,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
 
     private void insertNote(String noteText) {
         ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT,noteText);
+        values.put(DBOpenHelper.NOTE_TEXT, noteText);
         Uri noteUri = getContentResolver().insert(NotesProvider.CONTENT_URI,
                 values);
         Log.d("MainActivity", "inserted note" + noteUri.getLastPathSegment());
@@ -69,6 +74,26 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     }
 
     private void deleteAllNotes() {
+        DialogInterface.OnClickListener dialogClickListener =
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int button) {
+                if (button == DialogInterface.BUTTON_POSITIVE) {
+                    getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+
+                    restartLoader();
+                    Toast.makeText(MainActivity.this,
+                            getString(R.string.all_deleted),Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure))
+                .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                .show();
+
+
 
     }
 

@@ -2,4 +2,6 @@
     <string name="app_name">Make Note</string>
     <string name="create_sample_data">Create sample data</string>
     <string name="delete_all_notes">Delete all notes</string>
+    <string name="all_deleted">Deleted all data</string>
+    <string name="are_you_sure">Are you sure?</string>
 </resources>
