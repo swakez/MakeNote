@@ -17,9 +17,19 @@
         </activity>
 
         <provider
-            android:authorities="io.github.swakez.notesprovider"
             android:name=".NotesProvider"
+            android:authorities="io.github.swakez.notesprovider"
             android:exported="false" />
+
+        <activity
+            android:name=".EditorActivity"
+            android:label="EditorActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
     </application>
 
 </manifest>
