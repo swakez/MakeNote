@@ -42,6 +42,7 @@ public class EditorActivity extends AppCompatActivity {
                     DBOpenHelper.ALL_COLUMNS, noteFilter, null, null);
             cursor.moveToNext();
             oldText = cursor.getString(cursor.getColumnIndex(DBOpenHelper.NOTE_TEXT));
+            cursor.close();
             editor.setText(oldText);
             editor.requestFocus();
         }
@@ -70,7 +71,7 @@ public class EditorActivity extends AppCompatActivity {
         return true;
     }
 
-    public void finishEditing() {
+    private void finishEditing() {
         String newNoteText = editor.getText().toString().trim();
         switch (action) {
             case Intent.ACTION_INSERT:

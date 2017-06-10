@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -45,7 +46,7 @@ public class NotesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[]
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[]
             selectionArgs, String sortOrder) {
 
         if (uriMatcher.match(uri) == NOTES_ID) {
@@ -59,13 +60,13 @@ public class NotesProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return null;
     }
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         long id = database.insert(DBOpenHelper.TABLE_NOTES,
                 null, contentValues);
         Log.d("NotesProvider", id+" is id" + contentValues);
@@ -73,13 +74,13 @@ public class NotesProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         Log.d("NotesProvider", selection);
         return database.delete(DBOpenHelper.TABLE_NOTES, selection, selectionArgs);
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[]
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[]
             selectionArgs) {
         return database.update(DBOpenHelper.TABLE_NOTES,
                 contentValues, selection, selectionArgs);
