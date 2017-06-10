@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by swati on 07/06/2017.
@@ -67,11 +68,13 @@ public class NotesProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         long id = database.insert(DBOpenHelper.TABLE_NOTES,
                 null, contentValues);
+        Log.d("NotesProvider", id+" is id" + contentValues);
         return Uri.parse(BASE_PATH + "/" + id);
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        Log.d("NotesProvider", selection);
         return database.delete(DBOpenHelper.TABLE_NOTES, selection, selectionArgs);
     }
 

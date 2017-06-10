@@ -35,7 +35,7 @@ public class EditorActivity extends AppCompatActivity {
             setTitle(getString(R.string.new_note));
         } else {
             action = Intent.ACTION_EDIT;
-            noteFilter = DBOpenHelper.NOTE_ID + "/" + uri.getLastPathSegment();
+            noteFilter = DBOpenHelper.NOTE_ID + "=" + uri.getLastPathSegment();
             Log.d("EditorActivity", noteFilter);
 
             Cursor cursor = getContentResolver().query(uri,
@@ -49,7 +49,9 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        }
         return true;
     }
 
@@ -60,6 +62,9 @@ public class EditorActivity extends AppCompatActivity {
         switch (id) {
             case android.R.id.home:
                 finishEditing();
+                break;
+            case R.id.action_delete:
+                deleteNote();
                 break;
         }
         return true;
@@ -76,9 +81,9 @@ public class EditorActivity extends AppCompatActivity {
                 }
                 break;
             case Intent.ACTION_EDIT:
+                Log.d("EditorActivity", "bi " + newNoteText + "hi");
                 if (newNoteText.length() == 0) {
-                    // deleteNote();
-                    setResult(RESULT_CANCELED);
+                    deleteNote();
                 } else if (newNoteText.equals(oldText)) {
                     setResult(RESULT_CANCELED);
                 } else {
@@ -86,6 +91,14 @@ public class EditorActivity extends AppCompatActivity {
                 }
                 break;
         }
+        finish();
+    }
+
+    private void deleteNote() {
+        getContentResolver().delete(NotesProvider.CONTENT_URI,
+                noteFilter, null);
+        Toast.makeText(this, getString(R.string.note_deleted), Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
         finish();
     }
 
