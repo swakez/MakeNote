@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -66,13 +67,34 @@ public class EditorActivity extends AppCompatActivity {
 
     public void finishEditing() {
         String newNoteText = editor.getText().toString().trim();
-
-        if (newNoteText.length() == 0) {
-            setResult(RESULT_CANCELED);
-        } else {
-            insertNewNote(newNoteText);
+        switch (action) {
+            case Intent.ACTION_INSERT:
+                if (newNoteText.length() == 0) {
+                    setResult(RESULT_CANCELED);
+                } else {
+                    insertNewNote(newNoteText);
+                }
+                break;
+            case Intent.ACTION_EDIT:
+                if (newNoteText.length() == 0) {
+                    // deleteNote();
+                    setResult(RESULT_CANCELED);
+                } else if (newNoteText.equals(oldText)) {
+                    setResult(RESULT_CANCELED);
+                } else {
+                    updateNote(newNoteText);
+                }
+                break;
         }
         finish();
+    }
+
+    private void updateNote(String noteText) {
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.NOTE_TEXT, noteText);
+        getContentResolver().update(NotesProvider.CONTENT_URI, values, noteFilter, null);
+        Toast.makeText(this, getString(R.string.note_updated), Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
     }
 
     private void insertNewNote(String newNoteText) {
