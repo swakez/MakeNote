@@ -12,12 +12,12 @@ import android.support.annotation.Nullable;
  * Created by swati on 07/06/2017.
  */
 
-public class NotesProvider extends ContentProvider{
+public class NotesProvider extends ContentProvider {
 
     private static final String AUTHORITY = "io.github.swakez.notesprovider";
     private static final String BASE_PATH = "notes";
     public static final Uri CONTENT_URI =
-            Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
+            Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
 
     // Constant to identify the requested operation
     private static final int NOTES = 1;
@@ -26,9 +26,11 @@ public class NotesProvider extends ContentProvider{
     private static final UriMatcher uriMatcher =
             new UriMatcher(UriMatcher.NO_MATCH);
 
+    public static final String CONTENT_ITEM_TYPE = "Note";
+
     static {
-        uriMatcher.addURI(AUTHORITY,BASE_PATH, NOTES);
-        uriMatcher.addURI(AUTHORITY,BASE_PATH + "/#", NOTES_ID);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH, NOTES);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", NOTES_ID);
     }
 
     private SQLiteDatabase database;
@@ -59,7 +61,7 @@ public class NotesProvider extends ContentProvider{
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         long id = database.insert(DBOpenHelper.TABLE_NOTES,
-                null,contentValues);
+                null, contentValues);
         return Uri.parse(BASE_PATH + "/" + id);
     }
 

@@ -10,7 +10,7 @@
     tools:context="makenote.swakez.github.io.EditorActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -21,6 +21,5 @@
         android:layout_alignParentTop="true"
         android:ems="10"
         android:gravity="top"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="@string/enter_note" />
 </RelativeLayout>

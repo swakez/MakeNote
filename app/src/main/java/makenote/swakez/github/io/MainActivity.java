@@ -22,8 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-implements LoaderManager.LoaderCallbacks<Cursor>
-{
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter cursorAdapter;
 
@@ -74,23 +73,22 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     private void deleteAllNotes() {
         DialogInterface.OnClickListener dialogClickListener =
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int button) {
-                if (button == DialogInterface.BUTTON_POSITIVE) {
-                    getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int button) {
+                        if (button == DialogInterface.BUTTON_POSITIVE) {
+                            getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
 
-                    restartLoader();
-                    Toast.makeText(MainActivity.this,
-                            getString(R.string.all_deleted),Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+                            restartLoader();
+                            Toast.makeText(MainActivity.this,
+                                    getString(R.string.all_deleted), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.are_you_sure))
                 .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
                 .setNegativeButton(getString(android.R.string.no), dialogClickListener)
                 .show();
-
 
 
     }
@@ -103,7 +101,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     }
 
     private void restartLoader() {
-        getLoaderManager().restartLoader(0,null,this);
+        getLoaderManager().restartLoader(0, null, this);
     }
 
 
@@ -126,5 +124,12 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     public void openEditorForNewNote(View view) {
         Intent intent = new Intent(this, EditorActivity.class);
         startActivityForResult(intent, EDITOR_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            restartLoader();
+        }
     }
 }
